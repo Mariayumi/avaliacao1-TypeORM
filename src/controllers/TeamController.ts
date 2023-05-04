@@ -39,6 +39,21 @@ class TeamController{
         });
         return res.json(teams);
     }
+
+    public async update(req:Request, res:Response): Promise<Response>{
+        const {id,name} = req.body;
+        const team = await AppDataSource.getRepository(Team).findOneBy({id: id})
+        team.name = name
+        await AppDataSource.getRepository(Team).save(team)
+        return res.json(team)
+    }
+
+    public async delete(req:Request, res:Response): Promise<Response>{
+        const {id} = req.body;
+        const team = await AppDataSource.getRepository(Team).findOneBy({id: id})
+        await AppDataSource.getRepository(Team).delete(team)
+        return res.json(team)
+    }
 }
 
 const team = new TeamController();
